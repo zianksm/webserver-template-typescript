@@ -56,6 +56,9 @@ export class Config {
       case "staging":
         dotenv.config({ path: "./src/modules/config/.env.staging" });
         break;
+      case "test":
+        dotenv.config({ path: "./src/modules/config/.env.test" });
+        break;
       default:
         dotenv.config({ path: "./src/modules/config/.env.local" });
         break;
