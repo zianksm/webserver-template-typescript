@@ -3,6 +3,7 @@
     "outDir": "./dist",
     "allowJs": true,
     "target": "ESNext",
+    "declaration": true,
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "declarationMap": true,
