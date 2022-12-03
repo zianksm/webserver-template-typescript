@@ -1,3 +1,4 @@
+import { Type } from "typescript";
 import { Config } from "../../modules/config/server-config";
 import { Utils } from "../../modules/utils/utils";
 
@@ -15,6 +16,10 @@ export interface Server {
 
 export interface Module {
   init(): void;
+}
+
+export interface Manager<T> {
+  notify(msg: T): void;
 }
 
 export class App implements Server {

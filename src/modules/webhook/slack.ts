@@ -1,5 +1,6 @@
 import { IncomingWebhook } from "@slack/webhook";
 import Queue from "bull";
+import { Manager } from "../../server/app/app";
 import { Config } from "../config/server-config";
 
 export type webhookError = {
@@ -8,7 +9,7 @@ export type webhookError = {
   stackTrace: any;
 };
 
-export class SlackWebhook {
+export class SlackWebhook implements Manager<webhookError> {
   private instance: IncomingWebhook;
   private queue: Queue.Queue<webhookError>;
   private config: Config;
@@ -25,8 +26,8 @@ export class SlackWebhook {
     this.processQueue();
   }
 
-  public notify(err: webhookError) {
-    this.queue.add(err);
+  public notify(msg: webhookError) {
+    this.queue.add(msg);
   }
 
   private processQueue() {
