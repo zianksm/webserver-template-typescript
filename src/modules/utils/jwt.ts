@@ -36,5 +36,23 @@ export class Jwt implements JwtHandler {
     return payload;
   }
 
-  public verify(token: string): jwtVerifyStatus {}
+  public verify(token: string): jwtVerifyStatus {
+    try {
+      jwt.verify(token, this.secret);
+
+      return this.makeJwtVerifyStatus(true);
+    } catch (error) {
+      return this.makeJwtVerifyStatus(false, error.message);
+    }
+  }
+
+  private makeJwtVerifyStatus(
+    status: boolean,
+    message?: string
+  ): jwtVerifyStatus {
+    return {
+      status,
+      message,
+    };
+  }
 }
