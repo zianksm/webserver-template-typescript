@@ -74,8 +74,9 @@ export class Config {
     else return env;
   }
 
-  private eval(val: any, ident: string) {
-    if (val === undefined) throw new Error(`missing creds : ${ident}`);
+  private eval(val: string, ident: string) {
+    if (val === undefined || val.length == 0)
+      throw new Error(`missing creds : ${ident}`);
     else return;
   }
 

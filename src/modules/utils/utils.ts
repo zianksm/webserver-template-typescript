@@ -36,13 +36,14 @@ export class Utils implements ServerUtils {
   private mailQueue: MailManager;
 
   constructor(config: Config, options?: UtilsOptions) {
+    this.config = config;
+
     if (options?.webhookInstance === true)
       this.slackQueue = new SlackWebhook(config);
     if (options?.mailQueue === true)
       this.mailQueue = new MailManager(this, this.config);
 
     this.jwtHandler = new Jwt(config);
-    this.config = config;
   }
 
   public async fetch<T, U>(
