@@ -25,7 +25,7 @@ export class Jwt implements JwtHandler {
   }
 
   public create(payload: jwtPayload): string {
-    return jwt.sign(payload, this.secret);
+    return jwt.sign(payload, this.secret,{expiresIn:});
   }
 
   public getExpiry(): string {}

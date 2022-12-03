@@ -22,10 +22,12 @@ export class Config {
   //   private _pinataSecretKey: string;
   private _jwtSecret: string;
   //   private _betamaxWsUrl: string;
+  private _jwtExpiry: number;
 
   constructor() {
     this._nodeEnv = this.getEnv("NODE_ENV");
     this.loadEnv();
+    this._jwtExpiry = this.getEnv("JWT_EXPIRY", { toNumber: true });
     this._slackWebhookUrl = this.getEnv("SLACK_WEBHOOK_URL");
     this._slackIconUrl = this.getEnv("SLACK_ICON_URL");
     this._port = this.getEnv("PORT", { toNumber: true });
@@ -79,6 +81,10 @@ export class Config {
   private eval(val: any, ident: string) {
     if (val === undefined) throw new Error(`missing creds : ${ident}`);
     else return;
+  }
+
+  public get jwtExpiry(): number {
+    return this._jwtExpiry;
   }
 
   //   public get betamaxWsUrl(): string {
