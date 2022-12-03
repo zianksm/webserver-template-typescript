@@ -4,6 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "npx cross-env NODE_ENV=local npx ts-node --transpile-only ./src/server/index.ts",
+    "compile": "npx tsc",
+    "start-staging": "npx cross-env NODE_ENV=staging npx pm2 start ./dist/server/index.js",
+    "start-production": "npx cross-env NODE_ENV=production npx pm2 start ./dist/server/index.js",
+    "start-local": "npx cross-env NODE_ENV=local npx pm2 start ./dist/server/index.js",
+    "stop": "npx pm2 stop 0 & npx pm2 delete 0",
+    "deps": "npm i",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
