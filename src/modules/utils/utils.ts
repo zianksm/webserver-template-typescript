@@ -1,5 +1,5 @@
 import { Config } from "../config/server-config";
-import { JwtHandler, jwtVerifyStatus } from "./jwt";
+import { Jwt, JwtHandler, jwtVerifyStatus } from "./jwt";
 import axios, { AxiosResponse } from "axios";
 import { Request } from "express";
 
@@ -17,8 +17,8 @@ export class Utils implements ServerUtils {
   private jwtHandler: JwtHandler;
   private config: Config;
 
-  constructor(jwtHandler: JwtHandler, config: Config) {
-    this.jwtHandler = jwtHandler;
+  constructor(config: Config) {
+    this.jwtHandler = new Jwt(config);
     this.config = config;
   }
 
