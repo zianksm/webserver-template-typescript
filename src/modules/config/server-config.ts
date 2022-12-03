@@ -23,6 +23,7 @@ export class Config {
   private _jwtSecret: string;
   //   private _betamaxWsUrl: string;
   private _jwtExpiry: number;
+  private _slackChannel: string;
 
   constructor() {
     this._nodeEnv = this.getEnv("NODE_ENV");
@@ -30,6 +31,7 @@ export class Config {
     this._jwtExpiry = this.getEnv("JWT_EXPIRY", { toNumber: true });
     this._slackWebhookUrl = this.getEnv("SLACK_WEBHOOK_URL");
     this._slackIconUrl = this.getEnv("SLACK_ICON_URL");
+    this._slackChannel = this.getEnv("SLACK_CHANNEL");
     this._port = this.getEnv("PORT", { toNumber: true });
     // this._smtpHost = this.getEnv("SMTP_HOST");
     // this._smptPort = this.getEnv("SMTP_PORT", { toNumber: true });
@@ -81,6 +83,10 @@ export class Config {
   private eval(val: any, ident: string) {
     if (val === undefined) throw new Error(`missing creds : ${ident}`);
     else return;
+  }
+
+  public get slackChannel(): string {
+    return this._slackChannel;
   }
 
   public get jwtExpiry(): number {
