@@ -3,6 +3,7 @@ import { Jwt, JwtHandler, jwtVerifyStatus } from "./jwt";
 import axios, { AxiosResponse } from "axios";
 import { Request } from "express";
 import { SlackWebhook, webhookError } from "../webhook/slack";
+import { MailManager, mailRequest } from "../email/manager";
 
 export interface ServerUtils {
   fetch<T, U>(
@@ -13,6 +14,7 @@ export interface ServerUtils {
   createUuid(): string;
   verifyJwt(req: Request): jwtVerifyStatus;
   notifyError<T extends Error>(process: string, error: T): void;
+  notifyEmail<T extends mailRequest>(msg: T): void;
 }
 
 export type UtilsOptions = {
@@ -20,16 +22,24 @@ export type UtilsOptions = {
    * will create a new slack webhook queue instance if set to `true`
    * */
   webhookInstance?: boolean;
+
+  /**
+   * will create a new mail queue instance if set to `true`
+   */
+  mailQueue?: boolean;
 };
 
 export class Utils implements ServerUtils {
   private jwtHandler: JwtHandler;
   private config: Config;
   private slackQueue: SlackWebhook;
+  private mailQueue: MailManager;
 
   constructor(config: Config, options?: UtilsOptions) {
     if (options?.webhookInstance === true)
       this.slackQueue = new SlackWebhook(config);
+    if (options?.mailQueue === true)
+      this.mailQueue = new MailManager(this, this.config);
 
     this.jwtHandler = new Jwt(config);
     this.config = config;
@@ -74,6 +84,16 @@ export class Utils implements ServerUtils {
     } else {
       throw new Error(
         "cannot notify error as this utility class instance does not have slack webhoook instantiated."
+      );
+    }
+  }
+
+  public notifyEmail<T extends mailRequest>(msg: T): void {
+    if (this.mailQueue !== undefined && this.mailQueue !== null) {
+      this.mailQueue.notify(msg);
+    } else {
+      throw new Error(
+        "cannot notify mail as this utility class instance does not have slack webhoook instantiated."
       );
     }
   }
