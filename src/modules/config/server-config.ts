@@ -20,10 +20,12 @@ export class Config {
   private _jwtSecret: string;
   private _jwtExpiry: number;
   private _slackChannel: string;
+  private _serverEmail: string;
 
   constructor() {
     this._nodeEnv = this.getEnv("NODE_ENV");
     this.loadEnv();
+    this._serverEmail = this.getEnv("SERVER_EMAIL");
     this._jwtExpiry = this.getEnv("JWT_EXPIRY", { toNumber: true });
     this._slackWebhookUrl = this.getEnv("SLACK_WEBHOOK_URL");
     this._slackIconUrl = this.getEnv("SLACK_ICON_URL");
@@ -75,6 +77,10 @@ export class Config {
   private eval(val: any, ident: string) {
     if (val === undefined) throw new Error(`missing creds : ${ident}`);
     else return;
+  }
+
+  public get serverEmail(): string {
+    return this._serverEmail;
   }
 
   public get slackChannel(): string {
