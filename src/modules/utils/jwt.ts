@@ -10,7 +10,6 @@ export type jwtVerifyStatus = {
 
 export interface JwtHandler {
   create(payload: jwtPayload): string;
-  getExpiry(): string;
   decode(token: string): jwtPayload;
   verify(token: string): jwtVerifyStatus;
 }
@@ -32,9 +31,10 @@ export class Jwt implements JwtHandler {
     return jwt.sign(payload, this.secret, signOpt);
   }
 
-  public getExpiry(): string {}
-
-  public decode(token: string): jwtPayload {}
+  public decode(token: string): jwtPayload {
+    const payload: jwtPayload = jwt.decode(token);
+    return payload;
+  }
 
   public verify(token: string): jwtVerifyStatus {}
 }
