@@ -1,6 +1,6 @@
 import { Config } from "../config/server-config";
 import { JwtHandler, jwtVerifyStatus } from "./jwt";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Request } from "express";
 
 export interface ServerUtils {
@@ -17,15 +17,18 @@ export class Utils implements ServerUtils {
   private jwtHandler: JwtHandler;
   private config: Config;
 
+  constructor(jwtHandler: JwtHandler, config: Config) {
+    this.jwtHandler = jwtHandler;
+    this.config = config;
+  }
+
   public async fetch<T, U>(
     url: string,
     body: T,
     method: "get" | "post" | "put" | "delete"
   ): Promise<U> {
-    const response = await axios[method](url, body);
-    const responseData: U = response.data;
-
-    return responseData;
+    const response: AxiosResponse<U> = await axios[method](url, body);
+    return response.data;
   }
 
   public createUuid(): string {
