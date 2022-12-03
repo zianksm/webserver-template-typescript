@@ -5,7 +5,7 @@ export type jwtVerifyStatus = {
   message?: string;
 };
 
-interface JwtHandler {
+export interface JwtHandler {
   create(payload: jwtPayload): string;
   getExpiry(): string;
   decode(token: string): jwtPayload;
