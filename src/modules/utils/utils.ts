@@ -26,4 +26,8 @@ export class Utils implements ServerUtils {
 
     return responseData;
   }
+
+  createUuid(): string {
+    return crypto.randomUUID();
+  }
 }
