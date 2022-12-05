@@ -1,5 +1,5 @@
 import { App } from "../../../app";
-import { GlobalRoute } from "../../post/routes/default-post";
+import { GlobalRoute } from "../routes/default-get";
 
 export class Get {
   public static register(app: App) {
