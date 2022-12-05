@@ -16,6 +16,7 @@ export interface Route {
 
 export interface Server {
   start(): void;
+  getAttributes(): AppAttributes;
 }
 
 export interface Module {
@@ -27,11 +28,15 @@ export interface Manager<T> {
 }
 
 export const MAX_FILE_SIZE = 100 * 1024 * 1024;
-
+export type AppAttributes = {
+  config: Config;
+  utils: Utils;
+};
 export class App implements Server {
   public readonly config: Config;
   public readonly utils: Utils;
   public readonly app: Express;
+  private isInitialized: boolean = false;
 
   constructor() {
     const utilsOptions: UtilsOptions = {
@@ -44,9 +49,19 @@ export class App implements Server {
     this.build();
   }
 
+  public getAttributes(): AppAttributes {
+    return {
+      config: this.config,
+      utils: this.utils,
+    };
+  }
+
   public async start() {
-    // initialize modules and register routes
-    this.listen();
+    if (!this.isInitialized) {
+      this.isInitialized = true;
+      // initialize modules and register routes
+      this.listen();
+    } else return;
   }
 
   private build() {
