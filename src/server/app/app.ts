@@ -6,7 +6,7 @@ import morgan from "morgan";
 import { Config } from "../../modules/config/server-config";
 import { Utils, UtilsOptions } from "../../modules/utils/utils";
 
-export interface Service {
+export interface IService {
   handle(req: Request, res: Response): void;
 }
 
@@ -16,7 +16,6 @@ export interface Route {
 
 export interface Server {
   start(): void;
-  build(): void;
 }
 
 export interface Module {
@@ -42,6 +41,7 @@ export class App implements Server {
     this.config = new Config();
     this.utils = new Utils(this.config, utilsOptions);
     this.app = express();
+    this.build();
   }
 
   public async start() {
@@ -49,7 +49,7 @@ export class App implements Server {
     this.listen();
   }
 
-  public async build() {
+  private build() {
     const fileUploadOpt = {
       limits: { fileSize: MAX_FILE_SIZE },
       useTempFiles: true,
