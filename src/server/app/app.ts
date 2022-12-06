@@ -5,6 +5,8 @@ import { Express } from "express-serve-static-core";
 import morgan from "morgan";
 import { Config } from "../../modules/config/server-config";
 import { Utils, UtilsOptions } from "../../modules/utils/utils";
+import { Get } from "./routes/get/register/route-register";
+import { Put } from "./routes/put/register/route-register";
 
 export interface IService {
   handle(req: Request, res: Response): void;
@@ -60,6 +62,10 @@ export class App implements Server {
     if (!this.isInitialized) {
       this.isInitialized = true;
       // initialize modules and register routes
+      Get.register(this);
+      Put.register(this);
+      Put.register(this);
+
       this.listen();
     } else return;
   }
